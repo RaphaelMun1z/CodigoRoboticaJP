@@ -1,0 +1,125 @@
+const int enA = 10;
+const int in1 = 6;
+const int in2 = 5;
+const int enB = 9;
+const int in3 = 4;
+const int in4 = 3;
+
+const int ledEsquerda = 11;
+const int ledDireita = 12;
+
+const int BRILHO_BAIXO = 80;
+const int BRILHO_MEDIO = 170;
+const int BRILHO_ALTO = 255;
+
+void setup() {
+  pinMode(enA, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+
+  pinMode(ledEsquerda, OUTPUT);
+  pinMode(ledDireita, OUTPUT);
+
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, LOW);
+  analogWrite(enA, 0);
+  analogWrite(enB, 0);
+  analogWrite(ledEsquerda, 0);
+  analogWrite(ledDireita, 0);
+}
+
+void moverFrente(int velocidade) {
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  analogWrite(enA, velocidade);
+  analogWrite(enB, velocidade);
+}
+
+void moverTras(int velocidade) {
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+  analogWrite(enA, velocidade);
+  analogWrite(enB, velocidade);
+}
+
+void pararMotores() {
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, LOW);
+  analogWrite(enA, 0);
+  analogWrite(enB, 0);
+}
+
+void virarDireita(int velocidade) {
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
+  analogWrite(enA, velocidade);
+  analogWrite(enB, velocidade);
+}
+
+void virarEsquerda(int velocidade) {
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  analogWrite(enA, velocidade);
+  analogWrite(enB, velocidade);
+}
+
+void setarFarol(int nivel) {
+  int brilho = 0;
+
+  switch (nivel) {
+    case 1:
+      brilho = BRILHO_BAIXO;
+      break;
+    case 2:
+      brilho = BRILHO_MEDIO;
+      break;
+    case 3:
+      brilho = BRILHO_ALTO;
+      break;
+    default:
+      brilho = 0;
+      break;
+  }
+
+  analogWrite(ledEsquerda, brilho);
+  analogWrite(ledDireita, brilho);
+}
+
+void loop() {
+  setarFarol(1);
+  moverFrente(200);
+  delay(2000);
+
+  pararMotores();
+  setarFarol(3);
+  delay(1000);
+
+  moverTras(150);
+  delay(1500);
+
+  setarFarol(2);
+  virarDireita(180);
+  delay(1000);
+
+  virarEsquerda(180);
+  delay(1000);
+
+  pararMotores();
+  setarFarol(0);
+  delay(3000);
+}
